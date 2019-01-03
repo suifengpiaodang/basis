@@ -1,0 +1,17 @@
+**/target
+/.project
+/.settings
+/.classpath
+/.idea
+*.iml
+/.DS_Store
+.DS_Store
+*.DS_Store
+*/.DS_Store
+*.iml
+*.log
+/bin/
+UPIDGWL.ZIP
+/edd
+/pep
+/sanction
