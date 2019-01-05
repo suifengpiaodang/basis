@@ -14,4 +14,12 @@ public class User {
     private Integer age;
     private String address;
 
+    public User(String name){
+        userName = name;
+    }
+
+    public User(String name,int a){
+        userName = name;
+        age = a;
+    }
 }

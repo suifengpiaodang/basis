@@ -4,10 +4,7 @@ package com.cyk.basis.stream;
 import com.google.common.collect.Lists;
 import model.User;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -121,11 +118,70 @@ public class TestStream {
         userList.stream().forEach(user -> System.out.println(user.getUserName()));
     }
 
+    //findFirst findAny
     public void testFindFirst(){
         List<User> userList = this.genUserList();
         Optional<User> optionalUser =userList.stream().findFirst();
         Optional.ofNullable(optionalUser).ifPresent(System.out::println);
     }
+
+    public void testReduce(){
+        // 字符串连接，concat = "ABCD"
+        String concat = Stream.of("A", "B", "C", "D").reduce("", String::concat);
+        System.out.println(concat);
+        // 求最小值，minValue = -3.0
+        double minValue = Stream.of(-1.5, 1.0, -3.0, -2.0).reduce(Double.MAX_VALUE, Double::min);
+        System.out.println(minValue);
+        // 求和，sumValue = 10, 有起始值
+        int sumValue = Stream.of(1, 2, 3, 4).reduce(0, Integer::sum);
+        System.out.println(sumValue);
+        // 求和，sumValue = 10, 无起始值
+        sumValue = Stream.of(1, 2, 3, 4).reduce(Integer::sum).get();
+        System.out.println(sumValue);
+        // 过滤，字符串连接，concat = "ace"
+        concat = Stream.of("a", "B", "c", "D", "e", "F").
+                filter(x -> x.compareTo("Z") > 0).
+                reduce("", String::concat);
+
+        System.out.println(concat);
+    }
+
+    public void testLimitAndSkip() {
+        List<User> userList = new ArrayList();
+        for (int i = 1; i <= 100; i++) {
+            User user = new User("name" + i);
+            userList.add(user);
+        }
+        List<String> personList2 = userList.stream().
+                map(User::getUserName).limit(10).skip(3).collect(Collectors.toList());
+        System.out.println(personList2);
+    }
+
+
+
+    public void testMatch() {
+        List<User> userList = new ArrayList();
+        userList.add(new User("name" + 1, 10));
+
+        userList.add(new User("name" + 2, 21));
+        userList.add(new User("name" + 3, 34));
+        userList.add(new User("name" + 4, 6));
+        userList.add(new User("name" + 5, 55));
+        boolean isAllAdult = userList.stream().
+                allMatch(p -> p.getAge() > 18);
+        System.out.println("All are adult? " + isAllAdult);
+        boolean isThereAnyChild = userList.stream().
+                anyMatch(p -> p.getAge() < 12);
+        System.out.println("Any child? " + isThereAnyChild);
+    }
+
+
+    // Stream.generate
+
+    // Stream.iterate
+
+    // groupingBy/partitioningBy
+
 
 
 
@@ -149,7 +205,10 @@ public class TestStream {
         //testStream.testFlatMap();
         //testStream.testFilter();
         //testStream.testForEach();
-        testStream.testFindFirst();
+        //testStream.testFindFirst();
+        //testStream.testReduce();
+        //testStream.testLimitAndSkip();
+        testStream.testMatch();
     }
 
 
